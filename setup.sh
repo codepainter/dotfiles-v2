@@ -16,7 +16,7 @@ main (){
         echo "Configuring mac"
         sudo -v
         # "$ROOT/config-osx.sh"
-        "$ROOT/install-osx-dev-apps.sh"
+        "$ROOT/init-osx.sh"
         # "$ROOT/config-git.sh"
         # "$ROOT/install-osx-desktop-apps.sh"
         # "$ROOT/symlink-osx-dev-apps.sh"
@@ -24,7 +24,7 @@ main (){
     #     "$ROOT/install-linux.sh"
     elif [[ $(grep -i Microsoft /proc/version) ]]; then
         echo "Bash is running on WSL2"
-        "$ROOT/init-wsl2-apps.sh"
+        "$ROOT/init-wsl2.sh"
         # "$ROOT/scripts/omf.sh"
         # "$ROOT/scripts/ssh.sh"
     fi

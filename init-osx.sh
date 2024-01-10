@@ -26,6 +26,5 @@ else
 fi
 
 brew bundle --file=Brewfiles/Brewfile.common
-brew bundle --file=Brewfiles/Brewfile.osx
 brew cleanup
 
