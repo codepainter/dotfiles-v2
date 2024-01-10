@@ -13,7 +13,6 @@ main (){
     # "$ROOT/symlink-common.sh"
 
     if [[ $(uname -s) == "Darwin" ]]; then
-        echo "Configuring mac"
         sudo -v
         # "$ROOT/config-osx.sh"
         "$ROOT/init-osx.sh"
