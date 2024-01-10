@@ -5,13 +5,6 @@ source colors.sh
 
 set -e
 
-# Paths
-CONFIG_DIR="$HOME/.config/dotfiles"
-VAULT_SECRET="$HOME/.ansible-vault/vault.secret"
-DOTFILES_DIR="$HOME/.dotfiles"
-SSH_DIR="$HOME/.ssh"
-IS_FIRST_RUN="$HOME/.dotfiles_run"
-
 source .cisupport/is_ci.sh
 
 set -e
@@ -29,6 +22,11 @@ main (){
         # "$ROOT/symlink-osx-dev-apps.sh"
     # elif [[ $(uname -s) == "Linux" ]]; then
     #     "$ROOT/install-linux.sh"
+    elif [[ $(grep -i Microsoft /proc/version) ]]; then
+        echo "Bash is running on WSL2"
+        "$ROOT/init-wsl2-apps.sh"
+        # "$ROOT/scripts/omf.sh"
+        # "$ROOT/scripts/ssh.sh"
     fi
 }
 

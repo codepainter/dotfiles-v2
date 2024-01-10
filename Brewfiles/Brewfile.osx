@@ -1,15 +1,4 @@
-# Commonly used brews and casks
-brew "git"
-brew "jq"
-brew "fzf"
-brew "wget"
-brew "zip"
-
 cask "google-chrome"
-
-# Shell
-brew "fish"
-brew "fisher"
 
 # Dev tools
 brew "ansible"

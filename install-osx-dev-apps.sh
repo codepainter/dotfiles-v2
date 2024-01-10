@@ -25,6 +25,7 @@ else
     /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 fi
 
-brew bundle --file=Brewfile
+brew bundle --file=Brewfiles/Brewfile.common
+brew bundle --file=Brewfiles/Brewfile.osx
 brew cleanup
 
