@@ -1,0 +1,86 @@
+- name: "Fish | Install Fish and Fisher"
+  community.general.homebrew:
+    name:
+      - fish
+      - fisher
+    state: present
+  tags:
+    - always
+    - homebrew
+    - homebrew_install
+    - fish
+    - fisher
+
+- name: "Fish | Copy Fish Plugins"
+  ansible.builtin.copy:
+    src: files/fish_plugins
+    dest: ~/.config/fish/fish_plugins
+  tags:
+    - fish
+    - fisher
+    - fisher_install
+
+- name: "Fish | Install Fish Plugins"
+  ansible.builtin.shell: fish -c "fisher update"
+  tags:
+    - fish
+    - fisher
+    - fisher_install
+
+- name: "Fish | Copy Functions"
+  copy:
+    src: files/functions/
+    dest: ~/.config/fish/functions/
+
+# - name: "Fish | Set Fish as default shell"
+#   ansible.builtin.shell: chsh -s /usr/local/bin/fish
+#   tags:
+#     - fish
+#     - fisher
+#     - fisher_install
+
+- name: Check if oh-my-fish is installed
+  stat:
+    path: "~/omf.installed"
+  register: omf
+  tags:
+    - fish
+    - omf
+    - omf_install
+
+- name: Clone oh-my-fish repo
+  git:
+    repo: "https://github.com/oh-my-fish/oh-my-fish"
+    dest: "/tmp/omf"
+    clone: yes
+  when: not omf.stat.exists
+  tags:
+    - fish
+    - omf
+    - omf_install
+
+- name: Install oh-my-fish
+  shell:
+    cmd: fish -c "bin/install --offline --noninteractive --yes"
+    chdir: /tmp/omf
+  when: not omf.stat.exists
+  tags:
+    - fish
+    - omf
+    - omf_install
+
+- name: Install oh-my-fish theme 'bobthefish'
+  shell:
+    cmd: fish -c "omf install bobthefish"
+  when: not omf.stat.exists
+  tags:
+    - fish
+    - omf
+    - omf_install
+
+- name: Mark oh-my-fish installed with ~/omf.installed
+  file:
+    path: ~/omf.installed
+    state: touch
+  tags:
+    - fish
