@@ -1,11 +1,11 @@
 ---
-- name: "System | Update Homebrew"
-  community.general.homebrew:
-    update_homebrew: true
-  tags:
-    - always
-    - homebrew
-    - homebrew_update
+# - name: "System | Update Homebrew"
+#   community.general.homebrew:
+#     update_homebrew: true
+#   tags:
+#     - always
+#     - homebrew
+#     - homebrew_update
 
 - name: "System | Install Homebrew Packages"
   community.general.homebrew:

@@ -1,6 +1,7 @@
 default_roles:
   - system
   - fish
+  - git
 
 git_work_username: "Abiyasa"
 git_work_email: !vault |

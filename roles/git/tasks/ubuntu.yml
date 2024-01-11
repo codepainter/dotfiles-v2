@@ -1,0 +1,25 @@
+---
+- name: "Git | Install"
+  community.general.homebrew:
+    name:
+      - git
+    state: present
+  tags:
+    - always
+    - homebrew
+    - homebrew_install
+    - git
+    - git_install
+
+- name: "Git | Set user.name"
+  community.general.git_config:
+    name: user.name
+    scope: global
+    value: "{{ git_work_username }}"
+
+- name: "Git | Set user.email"
+  community.general.git_config:
+    name: user.email
+    scope: global
+    value: "{{ git_work_email }}"
+  no_log: true
