@@ -1,0 +1,14 @@
+AddKeysToAgent yes
+
+Host gitlab.com
+    PreferredAuthentications publickey
+    IdentityFile ~/.ssh/gitlab.abiyasa.hendro
+
+Host nri-dx.com
+    PreferredAuthentications publickey
+    IdentityFile ~/.ssh/sspf-gitlab-nri-dx-com
+
+Host github.com
+    PreferredAuthentications publickey
+    IdentityFile ~/.ssh/github.abiyasa2410
+

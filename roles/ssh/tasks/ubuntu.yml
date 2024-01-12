@@ -1,3 +1,37 @@
 ---
-- name: "SSH | Copy SSH keys"
-  # TODO: "Copy SSH keys"
+- name: "SSH | Copy Work SSH keys"
+  copy:
+    dest: "{{ ansible_user_dir }}/.ssh/{{ ssh_key_item.key }}"
+    content: "{{ ssh_key_item.value }}"
+    mode: 0600
+  no_log: true
+  loop_control:
+    loop_var: ssh_key_item
+  with_items: "{{ work_ssh_key | default({}) | dict2items }}"
+  tags:
+    - ssh
+    - work
+    - ssh_work
+
+- name: "SSH | Copy Personal SSH keys"
+  copy:
+    dest: "{{ ansible_user_dir }}/.ssh/{{ ssh_key_item.key }}"
+    content: "{{ ssh_key_item.value }}"
+    mode: 0600
+  no_log: true
+  loop_control:
+    loop_var: ssh_key_item
+  with_items: "{{ personal_ssh_key | default({}) | dict2items }}"
+  tags:
+    - ssh
+    - personal
+    - ssh_personal
+
+- name: "SSH | Copy SSH config"
+  copy:
+    src: files/config
+    dest: ~/.ssh/config
+  tags:
+    - ssh
+    - config
+    - ssh_config
