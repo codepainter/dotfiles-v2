@@ -71,8 +71,8 @@ function _cmd {
     exit 1
 }
 
-
 set -e
+sudo -v
 
 # Paths
 CONFIG_DIR="$HOME/.config/dotfiles"
