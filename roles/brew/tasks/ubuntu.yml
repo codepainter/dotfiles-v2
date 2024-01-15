@@ -27,6 +27,16 @@
     - homebrew
     - homebrew_install
 
+- name: "Brew | Add to .bashrc"
+  blockinfile:
+    path: ~/.bashrc
+    create: yes
+    state: present
+    block: |
+      test -d ~/.linuxbrew && eval "$(~/.linuxbrew/bin/brew shellenv)"
+      test -d /home/linuxbrew/.linuxbrew && eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+      echo "eval \"\$($(brew --prefix)/bin/brew shellenv)\"" >> ~/.bashrceval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+
 - name: "Brew | Install Brew Packages"
   command: |
     /home/linuxbrew/.linuxbrew/bin/brew install {{ item }}

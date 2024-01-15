@@ -21,17 +21,17 @@
     - fisher
     - fisher_install
 
+- name: "Fish | Copy Functions"
+  copy:
+    src: files/functions/
+    dest: ~/.config/fish/functions/
+
 - name: "Fish | Install Fish Plugins"
   ansible.builtin.shell: fish -c "fisher update"
   tags:
     - fish
     - fisher
     - fisher_install
-
-- name: "Fish | Copy Functions"
-  copy:
-    src: files/functions/
-    dest: ~/.config/fish/functions/
 
 # Oh My Fish
 - name: Check if oh-my-fish is installed
