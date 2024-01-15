@@ -1,0 +1,35 @@
+---
+- name: "Brew | Install Brew Pre-Requisites"
+  command: sudo apt install -y build-essential procps curl file git
+  tags:
+    - always
+    - homebrew
+    - homebrew_install
+
+- name: "Brew | Install Brew"
+  command: |
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+  args:
+    creates: /home/linuxbrew/.linuxbrew/bin/brew
+  tags:
+    - always
+    - homebrew
+    - homebrew_install
+
+- name: "Brew | Add Brew to PATH"
+  lineinfile:
+    path: ~/.profile
+    line: 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"'
+    create: yes
+    state: present
+  tags:
+    - always
+    - homebrew
+    - homebrew_install
+
+- name: "Brew | Install Brew Packages"
+  command: |
+    /home/linuxbrew/.linuxbrew/bin/brew install {{ item }}
+  loop:
+    - ansible
+    - ansible-lint

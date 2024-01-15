@@ -1,0 +1,8 @@
+---
+- name: "Bash | Copy .bashrc"
+  ansible.builtin.copy:
+    src: files/bashrc
+    dest: ~/.bashrc
+  tags:
+    - bash
+    - bashrc

@@ -12,13 +12,6 @@
     - fish
     - fisher
 
-# - name: "Fish | Set Fish as default shell"
-#   shell: chsh -s $(which fish)
-#   tags:
-#     - fish
-#     - fisher
-#     - fisher_install
-
 - name: "Fish | Copy Fish Plugins"
   ansible.builtin.copy:
     src: files/fish_plugins
@@ -87,7 +80,7 @@
   tags:
     - fish
 
-- name: "Updarte oh-my-fish"
+- name: "Update oh-my-fish"
   shell:
     cmd: fish -c "omf update"
   when: omf.stat.exists
