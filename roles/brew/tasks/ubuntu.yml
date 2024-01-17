@@ -1,6 +1,7 @@
 ---
 - name: "Brew | Install Brew Pre-Requisites"
-  command: sudo apt install -y build-essential procps curl file git
+  command: apt install -y build-essential procps curl file git
+  become: true
   tags:
     - always
     - homebrew

@@ -1,0 +1,55 @@
+# Oh My Fish
+- name: "OMF | Check if oh-my-fish is installed"
+  stat:
+    path: "~/omf.installed"
+  register: omf
+  tags:
+    - fish
+    - omf
+    - omf_install
+
+- name: "OMF | Clone oh-my-fish repo"
+  git:
+    repo: "https://github.com/oh-my-fish/oh-my-fish"
+    dest: "/tmp/omf"
+    clone: yes
+  when: not omf.stat.exists
+  tags:
+    - fish
+    - omf
+    - omf_install
+
+- name: "OMF | Install oh-my-fish"
+  shell:
+    cmd: fish -c "bin/install --offline --noninteractive --yes"
+    chdir: /tmp/omf
+  when: not omf.stat.exists
+  tags:
+    - fish
+    - omf
+    - omf_install
+
+- name: "OMF | Install oh-my-fish theme 'bobthefish'"
+  shell:
+    cmd: fish -c "omf install bobthefish"
+  when: not omf.stat.exists
+  tags:
+    - fish
+    - omf
+    - omf_install
+
+- name: "OMF | Mark oh-my-fish installed with ~/omf.installed"
+  file:
+    path: ~/omf.installed
+    state: touch
+  tags:
+    - fish
+
+- name: "OMF | Update oh-my-fish"
+  shell:
+    cmd: fish -c "omf update"
+  when: omf.stat.exists
+  tags:
+    - fish
+    - omf
+    - omf_update

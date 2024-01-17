@@ -2,6 +2,7 @@ default_roles:
   - system
   - bash
   - fish
+  - omf
   - brew
   - git
   - ssh

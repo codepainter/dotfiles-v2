@@ -71,7 +71,6 @@ function _cmd {
 }
 
 set -e
-sudo -v
 
 # Paths
 CONFIG_DIR="$HOME/.config/dotfiles"
@@ -117,7 +116,7 @@ _task "Update Ansible Galaxy..."
 # Run playbook
 _task "Running Ansible Playbook..."
 if [[ -f $VAULT_SECRET ]]; then
-    ansible-playbook --vault-password-file $VAULT_SECRET "$DOTFILES_DIR/main.yml" "$@"
+    ansible-playbook --vault-password-file $VAULT_SECRET "$DOTFILES_DIR/main.yml" --ask-become-pass "$@"
 else
     ansible-playbook "$DOTFILES_DIR/main.yml" "$@"
 fi
