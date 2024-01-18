@@ -1,0 +1,31 @@
+---
+- name: "Brew | Check if Brew is installed"
+  shell: command -v brew
+  register: result
+  changed_when: false
+  tags:
+    - always
+    - brew
+    - brew_install
+
+- set_fact:
+    brew_installed: "{{ not result.failed | bool }}"
+  tags:
+    - always
+    - brew
+
+- debug:
+    msg: 
+      result: "{{ result }}"
+      brew_installed: "{{ brew_installed }}"
+  tags:
+    - always
+    - brew
+
+- name: "Brew | Install Brew"
+  when: brew_installed == false
+  shell: bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+  tags:
+    - always
+    - brew
+    - brew_install
