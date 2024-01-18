@@ -1,0 +1,66 @@
+- name: "ASDF | Check if ASDF is installed"
+  shell: command -v asdf
+  register: result
+  tags:
+    - asdf
+    - asdf_install
+
+- name: "ASDF | Check if ASDF installed via Homebrew"
+  shell: brew --prefix asdf
+  register: brew_result
+  changed_when: false
+  tags:
+    - asdf
+    - asdf_install
+
+- name: "ASDF| Install pre-requisites"
+  apt:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - curl
+    - git
+  tags:
+    - asdf
+    - asdf_install
+
+- set_fact:
+    asdf_installed: "{{ not result.failed | bool }}"
+    asdf_brew_installed: "{{ not brew_result.failed | bool }}"
+  tags:
+    - asdf
+    - asdf_install
+
+- name: "ASDF | Install"
+  when: asdf_installed == false
+  shell: git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.13.1
+  tags:
+    - asdf
+    - asdf_install
+
+- name: "ASDF | Add to bashrc"
+  when: asdf_installed == false
+  ansible.builtin.lineinfile:
+    path: ~/.bashrc
+    line: ". $HOME/.asdf/asdf.sh"
+  tags:
+    - asdf
+    - asdf_install
+
+- name: "ASDF | Add to config.fish"
+  when: asdf_installed == false
+  ansible.builtin.lineinfile:
+    path: ~/.config/fish/config.fish
+    line: "source ~/.asdf/asdf.fish"
+  tags:
+    - asdf
+    - asdf_install
+    - fish_config
+
+- name: "ASDF | Configure Fish Completion"
+  when: asdf_installed == false
+  command: mkdir -p ~/.config/fish/completions; and ln -s ~/.asdf/completions/asdf.fish ~/.config/fish/completions
+  tags:
+    - asdf
+    - asdf_install
+    - fish_config
