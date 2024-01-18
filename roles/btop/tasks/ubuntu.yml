@@ -1,0 +1,7 @@
+- name: "btop | Install btop"
+  become: true
+  ansible.builtin.package:
+    name: btop
+    state: present
+  tags:
+    - btop

@@ -1,0 +1,37 @@
+- name: "Docker | Get info on docker host"
+  community.docker.docker_host_info:
+  register: result
+  ignore_errors: true
+  tags:
+    - docker
+
+- set_fact:
+    docker_installed: "{{ not result.failed | bool }}"
+  tags:
+    - docker
+
+# - debug:
+#     msg:
+#       result: "{{ result }}"
+#       docker_installed: "{{ docker_installed }}"
+#   tags:
+#     - docker
+#     - debug
+
+- name: "Docker | Install docker"
+  debug:
+    msg:
+      - "Please Install Docker-Desktop manually"
+      - "https://https://docs.docker.com/desktop/install/windows-install/#install-docker-desktop-on-windows"
+      - "or make sure docker is installed and running on your host"
+  when: not docker_installed
+  tags:
+    - docker
+
+- name: Show host information
+  ansible.builtin.debug:
+    var: result.host_info
+  when: docker_installed
+  tags:
+    - docker
+    - debug

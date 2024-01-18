@@ -1,0 +1,40 @@
+- name: "Docker | Get info on docker host"
+  community.docker.docker_host_info:
+  register: result
+  tags:
+    - always
+    - docker
+
+- set_fact:
+    docker_installed: "{{ not result.failed | bool }}"
+  tags:
+    - always
+    - docker
+
+- name: "Docker | Show host information"
+  ansible.builtin.debug:
+    var: result.host_info
+  when: docker_installed
+  tags:
+    - docker
+    - debug
+
+- name: "Docker | Download Docker.dmg"
+  ansible.builtin.get_url:
+    url: https://desktop.docker.com/mac/main/arm64/131620/Docker.dmg
+    dest: /tmp/Docker.dmg'
+  when: not docker_installed
+  tags:
+    - docker
+    - docker_install
+
+- name: "Docker | Install Docker Desktop"
+  shell: |
+    hdiutil attach Docker.dmg
+    /Volumes/Docker/Docker.app/Contents/MacOS/install --accept-license
+    hdiutil detach /Volumes/Docker
+    open -a Docker
+  when: not docker_installed
+  tags:
+    - docker
+    - docker_install
