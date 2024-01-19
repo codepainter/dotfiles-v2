@@ -79,22 +79,38 @@ DOTFILES_DIR="$HOME/.dotfiles"
 SSH_DIR="$HOME/.ssh"
 IS_FIRST_RUN="$HOME/.dotfiles_run"
 
-# Install Homebrew
-# if ! [[ $(brew --version) ]] ; then
-#     _task "Homebrew..."
-#         _cmd "NONINTERACTIVE=1 /bin/bash -c \"\$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)\""
-# fi
+unameOut="$(uname -s)"
+case "${unameOut}" in
+    Linux*)     machine=Linux;;
+    Darwin*)    machine=Mac;;
+    CYGWIN*)    machine=Cygwin;;
+    MINGW*)     machine=MinGw;;
+    MSYS_NT*)   machine=Git;;
+    *)          machine="UNKNOWN:${unameOut}"
+esac
 
 # Install Ansible
 if ! command -v ansible > /dev/null 2>&1; then
-    _task "Installing Ansible"
-        _cmd "sudo apt-get update"
-        _cmd "sudo apt-get install -y software-properties-common"
-        _cmd "sudo apt-add-repository -y ppa:ansible/ansible"
-        _cmd "sudo apt-get update"
-        _cmd "sudo apt-get install -y ansible"
-        _cmd "sudo apt-get install python3-argcomplete"
-        _cmd "sudo activate-global-python-argcomplete3"
+
+    if machine == "Mac"; then
+        _task "Installing Ansible via Homebrew"
+            # ensure brew is installed
+            if ! command -v brew > /dev/null 2>&1; then
+                _cmd "NONINTERACTIVE=1 /bin/bash -c \"\$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)\""
+            fi
+            _cmd "brew install ansible"
+    fi
+
+    if machine == "Linux"; then
+        _task "Installing Ansible"
+            _cmd "sudo apt-get update"
+            _cmd "sudo apt-get install -y software-properties-common"
+            _cmd "sudo apt-add-repository -y ppa:ansible/ansible"
+            _cmd "sudo apt-get update"
+            _cmd "sudo apt-get install -y ansible"
+            _cmd "sudo apt-get install python3-argcomplete"
+            _cmd "sudo activate-global-python-argcomplete3"
+    fi
 fi
 
 # Clone repository

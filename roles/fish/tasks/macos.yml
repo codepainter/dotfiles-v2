@@ -1,0 +1,55 @@
+- name: "Fish | Check if Fish is installed"
+  shell: command -v fish
+  register: result
+  changed_when: false
+  tags:
+    - always
+    - fish
+    - fish_install
+  
+- set_fact:
+    fish_installed: "{{ not result.failed | bool }}"
+  tags:
+    - always
+    - fish
+
+- debug:
+    msg: 
+      fish_installed: "{{ fish_installed }}"
+  tags:
+    - always
+    - fish
+
+- name: "Fish | Install Fish"
+  when: fish_installed == false
+  shell: brew install fish
+  tags:
+    - always
+    - fish
+    - fish_install
+
+- set_fact:
+    fish_installed: true
+  tags:
+    - always
+    - fish
+
+- name: "Fish | Ensure Fish is in /etc/shells"
+  when: fish_installed == true
+  lineinfile:
+    path: /etc/shells
+    line: /opt/homebrew/bin/fish
+    state: present
+    create: yes
+  tags:
+    - always
+    - fish
+    - fish_install
+
+- name: "Fish | Set Fish as default shell"
+  when: fish_installed == true
+  shell: sudo chsh -s /opt/homebrew/bin/fish
+  tags:
+    - always
+    - fish
+    - fish_install

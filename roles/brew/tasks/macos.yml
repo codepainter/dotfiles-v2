@@ -16,7 +16,6 @@
 
 - debug:
     msg: 
-      result: "{{ result }}"
       brew_installed: "{{ brew_installed }}"
   tags:
     - always
