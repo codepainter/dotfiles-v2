@@ -1,0 +1,52 @@
+- name: "Brew Cask | Tools"
+  community.general.homebrew_cask:
+    name: 
+      - alt-tab
+      - bitwarden
+      - google-chrome
+      - google-drive
+      - iterm2
+      - font-hack-nerd-font
+      - jdownloader
+      - qbittorrent
+      - obsidian
+      - raycast
+      - setapp
+      - spotify
+      - the-unarchiver
+      - vlc
+    state: present
+  tags: 
+    - always
+    - brew
+    - brew_cask
+    - brew_cask_tools
+
+- name: "Brew Cask | Communication"
+  community.general.homebrew_cask:
+    name: 
+      - discord
+      - slack
+      - telegram-desktop
+      - zoom
+      - whatsapp
+    state: present
+  tags: 
+    - always
+    - brew
+    - brew_cask
+    - brew_cask_communication
+
+- name: "Brew Cask | Development"
+  community.general.homebrew_cask:
+    name: 
+      - visual-studio-code
+      - postman
+      - dbeaver-community
+      - studio-3t
+    state: present
+  tags:
+    - always
+    - brew
+    - brew_cask
+    - brew_cask_development
