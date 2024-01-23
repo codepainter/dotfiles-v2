@@ -6,6 +6,8 @@ default_roles:
   - brew
   - git
   - ssh
+  - asdf
+  # - nvm
 
 git_work_username: "Abiyasa"
 git_work_email: !vault |

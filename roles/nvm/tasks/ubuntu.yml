@@ -1,0 +1,26 @@
+- name: "NVM | Ensure NVM is installed"
+  shell: command -v nvm
+  register: nvm_installed
+  tags:
+    - nvm
+    - nvm_install
+
+- name: "NVM | Install NVM"
+  shell: curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
+  when: nvm_installed.rc != 0
+  tags:
+    - nvm
+    - nvm_install
+
+- name: "NVM | Update .bashrc"
+  blockinfile:
+    path: ~/.bashrc
+    create: yes
+    state: present
+    block: |
+      export NVM_DIR="$HOME/.nvm"
+      [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+      [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+  tags:
+    - nvm
+    - nvm_install
