@@ -9,6 +9,22 @@ default_roles:
   - asdf
   # - nvm
 
+ubuntu_brew_packages:
+  - btop
+
+macos_brew_packages:
+  - btop
+  - transmission-cli
+  - zip
+  - jq
+  - yq
+  - wget
+  - curl
+  - tmux
+  - prettyping
+  - neovim
+  - 
+
 git_work_username: "Abiyasa"
 git_work_email: !vault |
   $ANSIBLE_VAULT;1.1;AES256

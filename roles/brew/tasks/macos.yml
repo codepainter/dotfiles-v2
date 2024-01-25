@@ -28,3 +28,21 @@
     - always
     - brew
     - brew_install
+
+- name: "Brew | Install Brew Packages"
+  when: brew_installed == true
+  homebrew:
+    name: "{{ item }}"
+    state: present
+  with_items: "{{ macos_brew_packages }}"
+  tags:
+    - always
+    - brew
+    - brew_install
+
+- name: "Brew | Cleanup and Prune"
+  shell: brew cleanup --prune=all
+  tags:
+    - always
+    - brew
+    - brew_install
