@@ -20,7 +20,7 @@
     - transmission
     - transmission_install
 
-- name: "Configure Transmission"
+- name: "Transmission | Configure Transmission"
   copy:
     src: "files/daemon/settings.json"
     dest: "~/.config/transmission-daemon/settings.json"
