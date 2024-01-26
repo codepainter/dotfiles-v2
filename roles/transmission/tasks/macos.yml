@@ -1,0 +1,29 @@
+- name: "Transmission | Ensure Transmission is installed"
+  shell: command -v transmission-daemon
+  register: result
+  tags:
+    - transmission
+    - transmission_install
+
+- set_fact:
+    transmission_installed: "{{ not result.failed | bool }}"
+  tags:
+    - transmission
+    - transmission_install
+
+- name: "Transmission | Install Transmission"
+  homebrew:
+    name: transmission-cli
+    state: present
+  when: transmission_installed == false
+  tags:
+    - transmission
+    - transmission_install
+
+- name: "Configure Transmission"
+  copy:
+    src: "files/daemon/settings.json"
+    dest: "~/.config/transmission-daemon/settings.json"
+  tags:
+    - transmission
+    - transmission_install
