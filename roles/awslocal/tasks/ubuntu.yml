@@ -1,0 +1,22 @@
+- name: "AWSLocal | Check if awslocal is installed"
+  shell: command -v awslocal
+  register: result
+  tags:
+    - awslocal
+    - awslocal_install
+
+- set_fact:
+    awslocal_installed: "{{ not result.failed | bool }}"
+  tags:
+    - awslocal
+    - awslocal_install
+
+- name: "AWSLocal | Install"
+  when: awslocal_installed == false
+  pip:
+    name: awscli-local
+    state: present
+  become: true
+  tags:
+    - awslocal
+    - awslocal_install
