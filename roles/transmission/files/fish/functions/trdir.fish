@@ -6,7 +6,7 @@ function trdir --description 'Process Torrent. Usage: trdir <src_dir>'
     # start transmission-daemon if not running
     if ! pgrep -x "transmission-daemon" > /dev/null
         echo "Starting transmission-daemon"
-        transmission-daemon -g ~/.config/transmission-daemon
+        transmission-daemon
     end
 
     for f in $src_dir/*.torrent
