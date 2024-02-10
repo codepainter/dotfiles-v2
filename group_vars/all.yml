@@ -23,7 +23,6 @@ macos_brew_packages:
   - tmux
   - prettyping
   - neovim
-  - 
 
 git_work_username: "Abiyasa"
 git_work_email: !vault |
