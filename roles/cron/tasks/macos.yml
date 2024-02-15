@@ -1,0 +1,32 @@
+---
+- name: "Cron | Brew update every day at 12 noon"
+  cron:
+    name: "Brew Update"
+    minute: "0"
+    hour: "12"
+    job: "brew update"
+  tags: 
+    - cron
+    - brew
+    - brew_update
+
+- block:
+    - name: "Cron | Ensure ~/.scripts folder exists"
+      file:
+        path: ~/.scripts
+        state: directory
+
+    - name: "Cron | Copy automate.py to scripts folder"
+      copy:
+        src: scripts/automate.py
+        dest: ~/.scripts/automate.py
+
+    - name: "Cron | Run automate.py every day at 4am"
+      cron:
+        name: "Automate"
+        minute: "0"
+        hour: "4"
+        job: "python3 ~/.scripts/automate.py"
+  tags:
+    - cron
+    - automate_py

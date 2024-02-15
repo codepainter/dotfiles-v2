@@ -1,0 +1,11 @@
+---
+- name: Brew Update everyday at 12 noon
+  cron:
+    name: "Brew Update"
+    minute: "0"
+    hour: "12"
+    job: "brew update"
+  tags: 
+    - cron
+    - brew
+    - brew_update
