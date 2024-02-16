@@ -5,7 +5,18 @@
     minute: "0"
     hour: "12"
     job: "brew update"
-  tags: 
+  tags:
     - cron
     - brew
     - brew_update
+
+- name: "Cron | Run docker system prune at the end of working hours"
+  cron:
+    name: "Docker System Prune"
+    minute: "0"
+    hour: "16"
+    job: "docker system prune -f"
+  tags:
+    - cron
+    - docker
+    - docker_system_prune
