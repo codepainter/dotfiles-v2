@@ -21,11 +21,12 @@
         src: scripts/automate.py
         dest: ~/.scripts/automate.py
 
-    - name: "Cron | Run automate.py every day at 4am"
+    - name: "Cron | Run automate.py on weekends at 12 noon"
       cron:
         name: "Automate"
         minute: "0"
-        hour: "4"
+        hour: "12"
+        weekday: "6,7"
         job: "python3 ~/.scripts/automate.py"
   tags:
     - cron
