@@ -10,7 +10,8 @@
     - brew
     - brew_update
 
-- block:
+- name: "Cron | Setup Automate.py to run on weekends at 12 noon"
+  block:
     - name: "Cron | Ensure ~/.scripts folder exists"
       file:
         path: ~/.scripts
