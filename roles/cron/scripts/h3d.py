@@ -1,0 +1,108 @@
+import os
+from pathlib import Path
+import re
+import shutil
+from rich.console import Console
+from h3d_mapping import regex_dict
+
+console = Console()
+
+WATCH_FOLDERS = [
+    "/Volumes/Seagate2TB/JDownloader/Various Files",
+]
+WATCH_EXTENSIONS = [".zip", ".rar"]
+DESTINATION = "/Volumes/home/H3D"
+BACKUP_DESTINATION = "/Volumes/Seagate2TB/H3D"
+
+
+def check_dest_dir(dir_path: Path):
+    if not dir_path.exists():
+        dir_path.mkdir(parents=True)
+
+
+def unzip_file(file: Path, destination: Path) -> None:
+    # Ensure file is a file
+    if not file.is_file():
+        raise ValueError(f"{file} is not a file")
+    # ensure destination is a directory
+    if not destination.is_dir():
+        raise ValueError(f"{destination} is not a directory")
+    with console.status(f"Unzipping {file.name}..."):
+        # Unzip file
+        shutil.unpack_archive(file.absolute(), destination.absolute())
+        # Delete file
+        file.unlink()
+
+
+def move_file(abs_src: Path, abs_dest: Path) -> None:
+    # ensure source is a file
+    if not abs_src.is_file():
+        raise ValueError(f"{abs_src} is not a file")
+    with console.status(f"move_file(): {abs_src} to {abs_dest}..."):
+        check_dest_dir(abs_dest.parent)
+        shutil.move(abs_src, abs_dest)
+
+
+def move_dir(src_path: Path, dest_path: Path) -> None:
+    if src_path.is_dir():
+        for items in src_path.iterdir():
+            move_dir(items, dest_path / items.name)
+    else:
+        if src_path.name == ".DS_Store":
+            return
+        move_file(src_path, dest_path)
+
+
+def main():
+    _h3d_dest = DESTINATION
+    # check if destination folder exists
+    if not Path(DESTINATION).exists():
+        _h3d_dest = BACKUP_DESTINATION
+        if not Path(BACKUP_DESTINATION).exists():
+            console.log(
+                f"Destination folder {DESTINATION} and backup folder {BACKUP_DESTINATION} not found")
+            return
+
+    for folder_path in WATCH_FOLDERS:
+        path = Path(folder_path)
+        if not path.exists():
+            console.log(f"Watch folder {path} not found")
+            continue
+        for file in path.iterdir():
+            if not file.suffix in WATCH_EXTENSIONS:
+                continue
+            # match filename with regex from h3d_mapping.py
+            for regex, destination in regex_dict.items():
+                if not re.search(regex, file.name):
+                    continue
+                console.log(f"Processing {file.name}...")
+                dest_path = Path(f"{_h3d_dest}/{destination}")
+                # check if destination folder exists
+                check_dest_dir(dest_path)
+                unzip_file(file, dest_path)
+                break
+    console.log("Unzipping Done!")
+
+
+def move():
+    # check if DESTINATION exists
+    if not Path(DESTINATION).exists():
+        console.log(f"move(): Destination folder {DESTINATION} not found")
+        return
+    # for each folder in BACKUP_DESTINATION
+    for folder_path in Path(BACKUP_DESTINATION).iterdir():
+        # match folder name with regex from h3d_mapping.py
+        for regex, destination in regex_dict.items():
+            if not re.search(regex, folder_path.name):
+                continue
+            dest_path = Path(f"{DESTINATION}/{destination}")
+            check_dest_dir(dest_path)
+            move_dir(folder_path, dest_path)
+            # remove empty folder
+            shutil.rmtree(folder_path)
+    console.log("Moving Done!")
+
+
+if __name__ == "__main__":
+    main()
+    move()

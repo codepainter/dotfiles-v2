@@ -10,7 +10,7 @@
     - brew
     - brew_update
 
-- name: "Cron | Setup Automate.py to run on weekends at 12 noon"
+- name: "Cron | Setup Automate.py"
   block:
     - name: "Cron | Ensure ~/.scripts folder exists"
       file:
@@ -22,13 +22,44 @@
         src: scripts/automate.py
         dest: ~/.scripts/automate.py
 
-    - name: "Cron | Run automate.py on weekends at 12 noon"
+    - name: "Cron | Run automate.py to run every 6 hours"
       cron:
         name: "Automate"
         minute: "0"
-        hour: "12"
-        weekday: "6,7"
-        job: "python3 ~/.scripts/automate.py"
+        hour: "*/6"
+        job: "/opt/homebrew/bin/python3 ~/.scripts/automate.py >> /tmp/automate.log 2>&1"
+
+    - name: "Cron | Setup logrotate for automate.log"
+      block:
+        - name: "Cron | Ensure logrotate is installed"
+          homebrew:
+            name: logrotate
+            state: present
+
+        - name: "Cron | Ensure logrotate.d folder exists"
+          file:
+            path: /opt/homebrew/etc/logrotate.d
+            state: directory
+
+        - name: "Cron | Create logrotate config for automate.log"
+          file:
+            path: /opt/homebrew/etc/logrotate.d/automate
+            state: touch
+        
+        - name: "Cron | Add logrotate config for automate.log"
+          blockinfile:
+            path: /opt/homebrew/etc/logrotate.d/automate
+            block: |
+              /tmp/automate.log {
+                maxsize 1M
+                daily
+                rotate 7
+                compress
+                delaycompress
+                missingok
+                notifempty
+              }
+      
   tags:
     - cron
     - automate_py
