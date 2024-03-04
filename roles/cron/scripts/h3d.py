@@ -32,6 +32,7 @@ def unzip_file(file: Path, destination: Path) -> None:
         shutil.unpack_archive(file.absolute(), destination.absolute())
         # Delete file
         file.unlink()
+        console.log(f"Unzipped {file.name} ...Done!")
 
 
 def move_file(abs_src: Path, abs_dest: Path) -> None:
@@ -41,6 +42,7 @@ def move_file(abs_src: Path, abs_dest: Path) -> None:
     with console.status(f"move_file(): {abs_src} to {abs_dest}..."):
         check_dest_dir(abs_dest.parent)
         shutil.move(abs_src, abs_dest)
+        console.log(f"Moved {abs_src} ...Done!")
 
 
 def move_dir(src_path: Path, dest_path: Path) -> None:
@@ -54,6 +56,7 @@ def move_dir(src_path: Path, dest_path: Path) -> None:
 
 
 def main():
+    unzip_count = 0
     _h3d_dest = DESTINATION
     # check if destination folder exists
     if not Path(DESTINATION).exists():
@@ -75,13 +78,13 @@ def main():
             for regex, destination in regex_dict.items():
                 if not re.search(regex, file.name):
                     continue
-                console.log(f"Processing {file.name}...")
                 dest_path = Path(f"{_h3d_dest}/{destination}")
                 # check if destination folder exists
                 check_dest_dir(dest_path)
                 unzip_file(file, dest_path)
+                unzip_count += 1
                 break
-    console.log("Unzipping Done!")
+    console.log(f"Unzipping {unzip_count} Done!")
 
 
 def move():
@@ -100,7 +103,7 @@ def move():
             move_dir(folder_path, dest_path)
             # remove empty folder
             shutil.rmtree(folder_path)
-    console.log("Moving Done!")
+    console.log(f"Moving Done!")
 
 
 if __name__ == "__main__":
