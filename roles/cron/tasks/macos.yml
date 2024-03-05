@@ -22,11 +22,11 @@
         src: scripts/automate.py
         dest: ~/.scripts/automate.py
 
-    - name: "Cron | Run automate.py to run every 6 hours"
+    - name: "Cron | Run automate.py to run every hour"
       cron:
         name: "Automate"
         minute: "0"
-        hour: "*/6"
+        hour: "*"
         job: "/opt/homebrew/bin/python3 ~/.scripts/automate.py >> /tmp/automate.log 2>&1"
 
     - name: "Cron | Setup logrotate for automate.log"
@@ -59,7 +59,27 @@
                 missingok
                 notifempty
               }
-      
   tags:
     - cron
     - automate_py
+
+- name: "Cron | H3D"
+  block:
+    - name: "Cron | Ensure ~/.scripts folder exists"
+      file:
+        path: ~/.scripts
+        state: directory
+    - name: "Cron | Copy h3d.py to scripts folder"
+      copy:
+        src: scripts/h3d.py
+        dest: ~/.scripts/h3d.py
+    - name: "Cron | Copy h3d_mapping.py to scripts folder"
+      copy:
+        src: scripts/h3d_mapping.py
+        dest: ~/.scripts/h3d_mapping.py
+    - name: "Cron | Run h3d.py to run every hour 15 minutes"
+      cron:
+        name: "h3d"
+        minute: "15"
+        hour: "*"
+        job: "/opt/homebrew/bin/python3 ~/.scripts/h3d.py"
