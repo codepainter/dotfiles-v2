@@ -9,14 +9,14 @@
     - cron
     - brew
     - brew_update
+    
+- name: "Cron | Ensure ~/.scripts folder exists"
+  file:
+    path: ~/.scripts
+    state: directory
 
 - name: "Cron | Setup Automate.py"
   block:
-    - name: "Cron | Ensure ~/.scripts folder exists"
-      file:
-        path: ~/.scripts
-        state: directory
-
     - name: "Cron | Copy automate.py to scripts folder"
       copy:
         src: scripts/automate.py
@@ -65,10 +65,6 @@
 
 - name: "Cron | H3D"
   block:
-    - name: "Cron | Ensure ~/.scripts folder exists"
-      file:
-        path: ~/.scripts
-        state: directory
     - name: "Cron | Copy h3d.py to scripts folder"
       copy:
         src: scripts/h3d.py

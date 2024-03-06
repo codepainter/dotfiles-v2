@@ -59,6 +59,7 @@ regex_dict = {
     r'stukove': '[stukove]',
     r'Suuru': '[Suuru]',
     r'ToonE': '[ToonE]',
+    r'Topu': '[Topu]',
     r'VG Erotica': '[VG Erotica]',
     r'WaterRing': '[WaterRing]',
     r'Yeero': '[Yeero]',
