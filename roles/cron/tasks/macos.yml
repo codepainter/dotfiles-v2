@@ -9,6 +9,16 @@
     - cron
     - brew
     - brew_update
+
+- name: "Pip | hurry.filesize"
+  pip:
+    name: hurry.filesize
+    state: present
+  become: true
+  tags:
+    - cron
+    - pip
+    - hurry_filesize
     
 - name: "Cron | Ensure ~/.scripts folder exists"
   file:

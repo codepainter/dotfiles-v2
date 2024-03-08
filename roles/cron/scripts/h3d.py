@@ -4,6 +4,7 @@ import re
 import shutil
 from rich.console import Console
 from h3d_mapping import regex_dict
+from hurry.filesize import size
 
 console = Console()
 
@@ -39,10 +40,11 @@ def move_file(abs_src: Path, abs_dest: Path) -> None:
     # ensure source is a file
     if not abs_src.is_file():
         raise ValueError(f"{abs_src} is not a file")
-    with console.status(f"move_file(): {abs_src} to {abs_dest}..."):
+    with console.status(f"move_file(): {abs_src.stem} to {abs_dest.parent}..."):
         check_dest_dir(abs_dest.parent)
+        file_size = os.path.getsize(abs_src)
         shutil.move(abs_src, abs_dest)
-        console.log(f"Moved {abs_src} ...Done!")
+        console.log(f"Moved {abs_src} ({size(file_size)}) ...Done!")
 
 
 def move_dir(src_path: Path, dest_path: Path) -> None:
