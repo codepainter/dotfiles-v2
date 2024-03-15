@@ -5,13 +5,15 @@ import shutil
 from rich.console import Console
 from h3d_mapping import regex_dict
 from hurry.filesize import size
+from py7zr import unpack_7zarchive
 
+shutil.register_unpack_format('7zip', ['.7z'], unpack_7zarchive)
 console = Console()
 
 WATCH_FOLDERS = [
     "/Volumes/Seagate2TB/JDownloader/Various Files",
 ]
-WATCH_EXTENSIONS = [".zip", ".rar"]
+WATCH_EXTENSIONS = [".zip", ".rar", ".7z"]
 DESTINATION = "/Volumes/home/H3D"
 BACKUP_DESTINATION = "/Volumes/Seagate2TB/H3D"
 
