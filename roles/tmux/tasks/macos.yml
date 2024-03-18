@@ -1,0 +1,21 @@
+---
+- name: "tmux | Ensure tmux is installed"
+  homebrew:
+    name: "tmux"
+    state: "present"
+  tags: 
+    - tmux
+
+- name: "tmux | Install TPM"
+  git:
+    repo: https://github.com/tmux-plugins/tpm
+    dest: ~/.tmux/plugins/tpm
+  tags: 
+    - tmux  
+
+- name: "tmux | Install tmux configuration"
+  copy:
+    src: "files/tmux.conf"
+    dest: "~/.tmux.conf"
+  tags: 
+    - tmux
