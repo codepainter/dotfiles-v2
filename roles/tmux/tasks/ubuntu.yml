@@ -11,7 +11,14 @@
     repo: https://github.com/tmux-plugins/tpm
     dest: ~/.tmux/plugins/tpm
   tags: 
-    - tmux  
+    - tmux
+
+- name: "tmux | Install xdg-utils"
+  apt:
+    name: "xdg-utils"
+    state: "present"
+  tags: 
+    - tmux
 
 - name: "tmux | Install tmux configuration"
   copy:
