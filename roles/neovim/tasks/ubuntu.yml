@@ -25,23 +25,13 @@
   tags:
     - neovim
 
-- name: "neovim | Install vim-tmux-navigator"
+- name: "neovim | Install plugins"
   copy:
-    src: "plugins/vim-tmux-navigator.lua"
-    dest: "~/.config/nvim/lua/plugins/vim-tmux-navigator.lua"
-  tags:
-    - neovim
-
-- name: "neovim | Install neo-tree config"
-  copy:
-    src: "plugins/neo-tree.lua"
-    dest: "~/.config/nvim/lua/plugins/neo-tree.lua"
-  tags:
-    - neovim
-
-- name: "neovim | Install auto-session config"
-  copy:
-    src: "plugins/auto-session.lua"
-    dest: "~/.config/nvim/lua/plugins/auto-session.lua"
+    src: "plugins/{{ item }}"
+    dest: "~/.config/nvim/lua/plugins/{{ item }}"
+  loop:
+    - vim-tmux-navigator.lua
+    - auto-session.lua
+    - neo-tree.lua
   tags:
     - neovim
