@@ -1,0 +1,47 @@
+---
+- name: "neovim | Ensure neovim is installed"
+  homebrew:
+    name: "neovim"
+    state: "present"
+  tags:
+    - neovim
+
+- name: "neovim | Check if lazyvim is installed"
+  stat:
+    path: "~/.config/nvimlazyvim.json"
+  register: lazyvim_result
+  tags:
+    - neovim
+
+- set_fact:
+    lazyvim_installed: "{{ not lazyvim_result.failed | bool }}"
+  tags:
+    - neovim
+
+- name: "neovim | Install lazygit"
+  homebrew:
+    name: "lazygit"
+    state: "present"
+  tags:
+    - neovim
+
+- name: "neovim | Install vim-tmux-navigator"
+  copy:
+    src: "plugins/vim-tmux-navigator.lua"
+    dest: "~/.config/nvim/lua/plugins/vim-tmux-navigator.lua"
+  tags:
+    - neovim
+
+- name: "neovim | Install neo-tree config"
+  copy:
+    src: "plugins/neo-tree.lua"
+    dest: "~/.config/nvim/lua/plugins/neo-tree.lua"
+  tags:
+    - neovim
+
+- name: "neovim | Install auto-session config"
+  copy:
+    src: "plugins/auto-session.lua"
+    dest: "~/.config/nvim/lua/plugins/auto-session.lua"
+  tags:
+    - neovim
