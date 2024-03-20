@@ -1,0 +1,60 @@
+---
+- name: "neovim | Ensure neovim is installed"
+  homebrew:
+    name: "neovim"
+    state: "present"
+  tags: 
+    - neovim
+     
+- name: "neovim | Check if lazyvim is installed"
+  stat:
+    path: "~/.config/nvimlazyvim.json"
+  register: lazyvim_result
+  tags: 
+    - neovim
+
+- set_fact:
+    lazyvim_installed: "{{ not lazyvim_result.failed | bool }}"
+  tags:
+    - neovim
+
+# - name: "neovim | Install LazyVim"
+#   block:
+#     - name: "neovim | Remove Current nvim configuration"
+#       file: 
+#         path: "~/.config/nvim"
+#         state: absent
+#     - name: "neovim | Cleanup local share nvim directory"
+#       file:
+#         path: "~/.local/share/nvim"
+#         state: absent
+#     - name: "neovim | Cleanup local state nvim directory"
+#       file:
+#         path: "~/.local/state/nvim"
+#         state: absent
+#     - name: "neovim | Cleanup cache nvim directory"
+#       file:
+#         path: "~/.cache/nvim"
+#         state: absent
+#     - name: "neovim | Install LazyVim"
+#       command: "git clone https://github.com/LazyVim/starter ~/.config/nvim"
+#     - name: "neovim | Remove .git folder"
+#       file:
+#         path: "~/.config/nvim/.git"
+#         state: absent
+#   tags: 
+#     - neovim
+
+- name: "neovim | Install lazygit"
+  homebrew:
+    name: "lazygit"
+    state: "present"
+  tags: 
+    - neovim
+
+- name: "neovim | Install vim-tmux-navigator"
+  copy:
+    src: "plugins/vim-tmux-navigator.lua"
+    dest: "~/.config/nvim/lua/plugins/vim-tmux-navigator.lua"
+  tags: 
+    - neovim
