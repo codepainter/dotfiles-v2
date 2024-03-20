@@ -20,3 +20,15 @@
     - cron
     - docker
     - docker_system_prune
+
+- name: "Cron | Brew cleanup every 1st of the month at 12:30 noon"
+  cron:
+    name: "Brew Cleanup"
+    minute: "30"
+    hour: "12"
+    day: "1"
+    job: "brew cleanup --prune=all"
+  tags:
+    - cron
+    - brew
+    - brew_cleanup

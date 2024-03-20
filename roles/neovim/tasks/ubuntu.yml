@@ -18,6 +18,30 @@
   tags:
     - neovim
 
+- name: "neovim | Install LazyVim, if not installed"
+  when: lazyvim_installed == false
+  block:
+    - name: "lazyvim | Cleanup nvim configs, caches, and states"
+      file:
+        path: "{{ item }}"
+        state: absent
+      loop:
+        - "~/.config/nvim"
+        - "~/.local/share/nvim"
+        - "~/.local/state/nvim"
+        - "~/.cache/nvim"
+    - name: "lazyvim | Install LazyVim"
+      git:
+        repo: "https://github.com/LazyVim/starter"
+        dest: "~/.config/nvim"
+    - name: "lazyvim | Remove .git folder"
+      file:
+        path: "~/.config/nvim/.git"
+        state: absent
+  tags:
+    - neovim
+    - lazyvim
+
 - name: "neovim | Install lazygit"
   homebrew:
     name: "lazygit"

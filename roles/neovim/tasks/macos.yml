@@ -3,14 +3,14 @@
   homebrew:
     name: "neovim"
     state: "present"
-  tags: 
+  tags:
     - neovim
-     
+
 - name: "neovim | Check if lazyvim is installed"
   stat:
     path: "~/.config/nvimlazyvim.json"
   register: lazyvim_result
-  tags: 
+  tags:
     - neovim
 
 - set_fact:
@@ -18,43 +18,45 @@
   tags:
     - neovim
 
-# - name: "neovim | Install LazyVim"
-#   block:
-#     - name: "neovim | Remove Current nvim configuration"
-#       file: 
-#         path: "~/.config/nvim"
-#         state: absent
-#     - name: "neovim | Cleanup local share nvim directory"
-#       file:
-#         path: "~/.local/share/nvim"
-#         state: absent
-#     - name: "neovim | Cleanup local state nvim directory"
-#       file:
-#         path: "~/.local/state/nvim"
-#         state: absent
-#     - name: "neovim | Cleanup cache nvim directory"
-#       file:
-#         path: "~/.cache/nvim"
-#         state: absent
-#     - name: "neovim | Install LazyVim"
-#       command: "git clone https://github.com/LazyVim/starter ~/.config/nvim"
-#     - name: "neovim | Remove .git folder"
-#       file:
-#         path: "~/.config/nvim/.git"
-#         state: absent
-#   tags: 
-#     - neovim
+- name: "neovim | Install LazyVim, if not installed"
+  when: lazyvim_installed == false
+  block:
+    - name: "lazyvim | Cleanup nvim configs, caches, and states"
+      file:
+        path: "{{ item }}"
+        state: absent
+      loop:
+        - "~/.config/nvim"
+        - "~/.local/share/nvim"
+        - "~/.local/state/nvim"
+        - "~/.cache/nvim"
+    - name: "lazyvim | Install LazyVim"
+      git:
+        repo: "https://github.com/LazyVim/starter"
+        dest: "~/.config/nvim"
+    - name: "lazyvim | Remove .git folder"
+      file:
+        path: "~/.config/nvim/.git"
+        state: absent
+  tags:
+    - neovim
+    - lazyvim
 
 - name: "neovim | Install lazygit"
   homebrew:
     name: "lazygit"
     state: "present"
-  tags: 
+  tags:
     - neovim
 
-- name: "neovim | Install vim-tmux-navigator"
+- name: "neovim | Install plugins"
   copy:
-    src: "plugins/vim-tmux-navigator.lua"
-    dest: "~/.config/nvim/lua/plugins/vim-tmux-navigator.lua"
-  tags: 
+    src: "plugins/{{ item }}"
+    dest: "~/.config/nvim/lua/plugins/{{ item }}"
+  loop:
+    - vim-tmux-navigator.lua
+    - auto-session.lua
+    - neo-tree.lua
+  tags:
     - neovim
+
