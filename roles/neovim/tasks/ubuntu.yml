@@ -1,20 +1,26 @@
 ---
-- name: "neovim | Ensure neovim is installed"
+- name: "neovim | Ensure neovim and its dependencies are installed"
   homebrew:
-    name: "neovim"
+    name: "{{ item }}"
     state: "present"
+  loop:
+    - "neovim"
+    - "bat"
+    - "fzf"
+    - "the_silver_searcher"
+    - "ripgrep"
   tags:
     - neovim
 
 - name: "neovim | Check if lazyvim is installed"
   stat:
-    path: "~/.config/nvimlazyvim.json"
+    path: "~/.config/nvim/lazyvim.json"
   register: lazyvim_result
   tags:
     - neovim
 
 - set_fact:
-    lazyvim_installed: "{{ not lazyvim_result.failed | bool }}"
+    lazyvim_installed: "{{ lazyvim_result.stat.exists | bool }}"
   tags:
     - neovim
 
@@ -57,5 +63,7 @@
     - vim-tmux-navigator.lua
     - auto-session.lua
     - neo-tree.lua
+    - fzf.lua
+    - catpuccin.lua
   tags:
     - neovim
