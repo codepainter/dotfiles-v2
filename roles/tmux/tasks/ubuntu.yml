@@ -1,28 +1,40 @@
 ---
 - name: "tmux | Ensure tmux is installed"
   homebrew:
-    name: "tmux"
+    name: "{{ item }}"
     state: "present"
-  tags: 
+  loop:
+    - tmux
+    - starship
+  tags:
     - tmux
 
 - name: "tmux | Install TPM"
   git:
     repo: https://github.com/tmux-plugins/tpm
     dest: ~/.tmux/plugins/tpm
-  tags: 
+  tags:
     - tmux
 
 - name: "tmux | Install xdg-utils"
   apt:
-    name: "xdg-utils"
+    name: "{{ item }}"
     state: "present"
-  tags: 
+  loop:
+    - xdg-utils
+  tags:
     - tmux
 
 - name: "tmux | Install tmux configuration"
   copy:
     src: "files/tmux.conf"
     dest: "~/.tmux.conf"
-  tags: 
+  tags:
+    - tmux
+
+- name: "tmux | Install starship toml"
+  copy:
+    src: files/starship.toml
+    dest: "~/.config/starship.toml"
+  tags:
     - tmux
