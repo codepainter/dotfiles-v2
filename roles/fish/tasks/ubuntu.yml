@@ -12,6 +12,13 @@
     - fish
     - fisher
 
+- name: "Fish | Install config.fish"
+  copy:
+    src: files/config.fish
+    dest: ~/.config/fish/config.fish
+  tags:
+    - fish
+
 - name: "Fish | Copy Fish Plugins"
   ansible.builtin.copy:
     src: files/fish_plugins
@@ -32,3 +39,8 @@
     - fish
     - fisher
     - fisher_install
+
+- name: "Fish | Install Gruvbox Rainbow Preset for starship"
+  command: "starship preset gruvbox-rainbow -o ~/.config/starship.toml"
+  tags:
+    - fish
