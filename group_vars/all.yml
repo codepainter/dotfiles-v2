@@ -11,10 +11,10 @@ default_roles:
 
 ubuntu_brew_packages:
   - btop
+  - dust
 
 macos_brew_packages:
   - btop
-  - transmission-cli
   - zip
   - jq
   - yq
@@ -23,6 +23,7 @@ macos_brew_packages:
   - tmux
   - prettyping
   - neovim
+  - dust
 
 git_work_username: "Abiyasa"
 git_work_email: !vault |
