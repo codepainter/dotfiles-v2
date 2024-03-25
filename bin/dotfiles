@@ -35,39 +35,41 @@ OVERWRITE='\e[1A\e[K'
 
 DOTFILES_LOG="$HOME/.dotfiles.log"
 
+export LC_ALL=en_US.UTF-8
+
 # _header colorize the given argument with spacing
 function _task {
-    # if _task is called while a task was set, complete the previous
-    if [[ $TASK != "" ]]; then
-        printf "${OVERWRITE}${LGREEN} [✓]  ${LGREEN}${TASK}\n"
-    fi
-    # set new task title and print
-    TASK=$1
-    printf "${LBLACK} [ ]  ${TASK} \n${LRED}"
+	# if _task is called while a task was set, complete the previous
+	if [[ $TASK != "" ]]; then
+		printf "${OVERWRITE}${LGREEN} [✓]  ${LGREEN}${TASK}\n"
+	fi
+	# set new task title and print
+	TASK=$1
+	printf "${LBLACK} [ ]  ${TASK} \n${LRED}"
 }
 
 # _cmd performs commands with error checking
 function _cmd {
-    #create log if it doesn't exist
-    if ! [[ -f $DOTFILES_LOG ]]; then
-        touch $DOTFILES_LOG
-    fi
-    # empty conduro.log
-    > $DOTFILES_LOG
-    # hide stdout, on error we print and exit
-    if eval "$1" 1> /dev/null 2> $DOTFILES_LOG; then
-        return 0 # success
-    fi
-    # read error from log and add spacing
-    printf "${OVERWRITE}${LRED} [X]  ${TASK}${LRED}\n"
-    while read line; do
-        printf "      ${line}\n"
-    done < $DOTFILES_LOG
-    printf "\n"
-    # remove log file
-    rm $DOTFILES_LOG
-    # exit installation
-    exit 1
+	#create log if it doesn't exist
+	if ! [[ -f $DOTFILES_LOG ]]; then
+		touch $DOTFILES_LOG
+	fi
+	# empty conduro.log
+	>$DOTFILES_LOG
+	# hide stdout, on error we print and exit
+	if eval "$1" 1>/dev/null 2>$DOTFILES_LOG; then
+		return 0 # success
+	fi
+	# read error from log and add spacing
+	printf "${OVERWRITE}${LRED} [X]  ${TASK}${LRED}\n"
+	while read line; do
+		printf "      ${line}\n"
+	done <$DOTFILES_LOG
+	printf "\n"
+	# remove log file
+	rm $DOTFILES_LOG
+	# exit installation
+	exit 1
 }
 
 set -e
@@ -81,66 +83,67 @@ IS_FIRST_RUN="$HOME/.dotfiles_run"
 
 unameOut="$(uname -s)"
 case "${unameOut}" in
-    Linux*)     machine=Linux;;
-    Darwin*)    machine=Mac;;
-    CYGWIN*)    machine=Cygwin;;
-    MINGW*)     machine=MinGw;;
-    MSYS_NT*)   machine=Git;;
-    *)          machine="UNKNOWN:${unameOut}"
+Linux*) machine=Linux ;;
+Darwin*) machine=Mac ;;
+CYGWIN*) machine=Cygwin ;;
+MINGW*) machine=MinGw ;;
+MSYS_NT*) machine=Git ;;
+*) machine="UNKNOWN:${unameOut}" ;;
 esac
 
 # Install Ansible
-if ! command -v ansible > /dev/null 2>&1; then
+if ! command -v ansible >/dev/null 2>&1; then
 
-    if machine == "Mac"; then
-        _task "Installing Ansible via Homebrew"
-            # ensure brew is installed
-            if ! command -v brew > /dev/null 2>&1; then
-                _cmd "NONINTERACTIVE=1 /bin/bash -c \"\$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)\""
-            fi
-            _cmd "brew install ansible"
-    fi
+	if machine == "Mac"; then
+		_task "Installing Ansible via Homebrew"
+		# ensure brew is installed
+		if ! command -v brew >/dev/null 2>&1; then
+			_cmd "NONINTERACTIVE=1 /bin/bash -c \"\$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)\""
+		fi
+		_cmd "brew install ansible"
+	fi
 
-    if machine == "Linux"; then
-        _task "Installing Ansible"
-            _cmd "sudo apt-get update"
-            _cmd "sudo apt-get install -y software-properties-common"
-            _cmd "sudo apt-add-repository -y ppa:ansible/ansible"
-            _cmd "sudo apt-get update"
-            _cmd "sudo apt-get install -y ansible"
-            _cmd "sudo apt-get install python3-argcomplete"
-            _cmd "sudo activate-global-python-argcomplete3"
-    fi
+	if machine == "Linux"; then
+		_task "Installing Ansible"
+		_cmd "sudo apt-get update"
+		_cmd "sudo apt-get install -y software-properties-common"
+		_cmd "sudo apt-add-repository -y ppa:ansible/ansible"
+		_cmd "sudo apt-get update"
+		_cmd "sudo apt-get install -y ansible"
+		_cmd "sudo apt-get install python3-argcomplete"
+		_cmd "sudo activate-global-python-argcomplete3"
+	fi
 fi
 
 # Clone repository
 if ! [[ -d "$DOTFILES_DIR" ]]; then
-    _task "Clone Repository..."
-        _cmd "git clone --quiet "https://github.com/codepainter/dotfiles-v2.git" $DOTFILES_DIR"
+	_task "Clone Repository..."
+	_cmd "git clone --quiet "https://github.com/codepainter/dotfiles-v2.git" $DOTFILES_DIR"
 else
-    _task "Update Repository..."
-        _cmd "git -C "$DOTFILES_DIR" pull --quiet"
+	_task "Update Repository..."
+	_cmd "git -C "$DOTFILES_DIR" pull --quiet"
 fi
 
 # Create path
-pushd "$DOTFILES_DIR" 2>&1 > /dev/null
+pushd "$DOTFILES_DIR" 2>&1 >/dev/null
 
 # Update Galaxy
 _task "Update Ansible Galaxy..."
-    _cmd "ansible-galaxy install -r requirements.yml"
+_cmd "ansible-galaxy install -r requirements.yml"
 
 # Run playbook
 _task "Running Ansible Playbook..."
 if [[ -f $VAULT_SECRET ]]; then
-    ansible-playbook --vault-password-file $VAULT_SECRET "$DOTFILES_DIR/main.yml" --ask-become-pass "$@"
+	ansible-playbook --vault-password-file $VAULT_SECRET "$DOTFILES_DIR/main.yml" --ask-become-pass "$@"
 else
-    ansible-playbook "$DOTFILES_DIR/main.yml" "$@"
+	ansible-playbook "$DOTFILES_DIR/main.yml" "$@"
 fi
 
-popd 2>&1 > /dev/null
+popd 2>&1 >/dev/null
 
 if ! [[ -f "$IS_FIRST_RUN" ]]; then
-    echo -e "${CHECK_MARK} ${GREEN}First run complete!${NC}"
-    echo -e "${ARROW} ${CYAN}Please reboot your computer to complete the setup.${NC}"
-    touch "$IS_FIRST_RUN"
+	echo -e "${CHECK_MARK} ${GREEN}First run complete!${NC}"
+	echo -e "${ARROW} ${CYAN}Please reboot your computer to complete the setup.${NC}"
+	touch "$IS_FIRST_RUN"
 fi
+

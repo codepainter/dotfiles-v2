@@ -56,5 +56,7 @@
     - vim-tmux-navigator.lua
     - auto-session.lua
     - neo-tree.lua
+    - catpuccin.lua
+    - copilot-chat.lua
   tags:
     - neovim
