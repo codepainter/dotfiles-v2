@@ -65,5 +65,6 @@
     - neo-tree.lua
     - fzf.lua
     - catpuccin.lua
+    - copilot-chat.lua
   tags:
     - neovim
