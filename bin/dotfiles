@@ -35,7 +35,10 @@ OVERWRITE='\e[1A\e[K'
 
 DOTFILES_LOG="$HOME/.dotfiles.log"
 
-export LC_ALL=en_US.UTF-8
+echo "LC_ALL=en_US.UTF-8" | sudo tee -a /etc/environment
+echo "en_US.UTF-8 UTF-8" | sudo tee -a /etc/locale.gen
+echo "LANG=en_US.UTF-8" | sudo tee -a /etc/locale.conf
+sudo locale-gen en_US.UTF-8
 
 # _header colorize the given argument with spacing
 function _task {
@@ -146,4 +149,3 @@ if ! [[ -f "$IS_FIRST_RUN" ]]; then
 	echo -e "${ARROW} ${CYAN}Please reboot your computer to complete the setup.${NC}"
 	touch "$IS_FIRST_RUN"
 fi
-
