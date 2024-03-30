@@ -58,5 +58,6 @@
     - neo-tree.lua
     - catpuccin.lua
     - copilot-chat.lua
+    - vim-flog.lua
   tags:
     - neovim
