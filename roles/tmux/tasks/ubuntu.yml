@@ -39,3 +39,9 @@
     dest: "~/.config/starship.toml"
   tags:
     - tmux
+
+- name: "tmux | Install tmuxinator completion"
+  shell:
+    cmd: fish -c "wget https://raw.githubusercontent.com/tmuxinator/tmuxinator/master/completion/tmuxinator.fish -O ~/.config/fish/completions/tmuxinator.fish"
+  tags:
+    - tmux
