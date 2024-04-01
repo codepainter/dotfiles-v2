@@ -78,6 +78,6 @@
         name: "h3d"
         minute: "15"
         hour: "*"
-        job: "~/.scripts/h3d/bin/python3 ~/.scripts/h3d.py"
+        job: "~/.scripts/h3d/bin/python3 ~/.scripts/h3d/h3d.py"
   tags:
       - cron
