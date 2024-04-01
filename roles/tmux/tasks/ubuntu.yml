@@ -6,6 +6,7 @@
   loop:
     - tmux
     - starship
+    - tmuxinator
   tags:
     - tmux
 

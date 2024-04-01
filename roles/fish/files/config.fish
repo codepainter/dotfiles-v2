@@ -9,4 +9,3 @@ end
 source /home/linuxbrew/.linuxbrew/opt/asdf/libexec/asdf.fish
 
 starship init fish | source
-
