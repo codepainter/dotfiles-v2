@@ -16,6 +16,7 @@ regex_dict = {
     r"Bulging Senpai": "[Bulging Senpai]",
     r"BulgingS": "[Bulging Senpai]",
     r"BulgingSenpai": "[Bulging Senpai]",
+    r"Croove": "[Croove]",
     r"Derpixon": "[Derpixon]",
     r"DobermanS": "[DobermanS]",
     r"Echiee": "[Echiee]",
@@ -79,5 +80,4 @@ regex_dict = {
     r"Waifu Enjoyer": "[Waifu Enjoyer]",
     r"WaterRing": "[WaterRing]",
     r"Yeero": "[Yeero]",
-    r"Croove": "[Croove]",
 }
