@@ -62,6 +62,7 @@ regex_dict = {
     r"RashNemain": "[RashNemain]",
     r"RedHot": "[RedHot]",
     r"Redmoa": "[Redmoa]",
+    r"Rogowski": "[Rogowski]",
     r"Rushzilla": "[Rushzilla]",
     r"SaveAss": "[SaveAss]",
     r"Secazz": "[Secazz]",
