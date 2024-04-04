@@ -65,4 +65,6 @@
   copy:
     src: files/macos/functions/
     dest: ~/.config/fish/functions/
+  tags:
+    - fish
 

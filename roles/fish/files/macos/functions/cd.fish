@@ -1,3 +1,0 @@
-function cd
-    z
-end
