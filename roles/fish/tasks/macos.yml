@@ -6,7 +6,7 @@
     - always
     - fish
     - fish_install
-  
+
 - set_fact:
     fish_installed: "{{ not result.failed | bool }}"
   tags:
@@ -14,7 +14,7 @@
     - fish
 
 - debug:
-    msg: 
+    msg:
       fish_installed: "{{ fish_installed }}"
   tags:
     - always
@@ -53,3 +53,16 @@
     - always
     - fish
     - fish_install
+
+- name: "Fish | Install config.fish"
+  copy:
+    src: files/macos/config.fish
+    dest: ~/.config/fish/config.fish
+  tags:
+    - fish
+
+- name: "Fish | Copy Functions"
+  copy:
+    src: files/macos/functions/
+    dest: ~/.config/fish/functions/
+
