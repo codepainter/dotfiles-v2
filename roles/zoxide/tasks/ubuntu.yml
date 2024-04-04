@@ -1,0 +1,17 @@
+---
+- name: "zoxide | Ensure zoxide is installed"
+  homebrew:
+    name: zoxide
+    state: present
+  tags:
+    - zoxide
+
+- name: "zoxide | Install zoxide fish plugin"
+  shell: "fish -c 'fisher install kidonng/zoxide.fish'"
+  tags:
+    - zoxide
+
+- name: "zoxide | Setup alias to 'j'"
+  shell: "fish -c 'set --universal zoxide_cmd j'"
+  tags:
+    - zoxide
