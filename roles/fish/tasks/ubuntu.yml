@@ -14,7 +14,7 @@
 
 - name: "Fish | Install config.fish"
   copy:
-    src: files/config.fish
+    src: files/ubuntu/config.fish
     dest: ~/.config/fish/config.fish
   tags:
     - fish
