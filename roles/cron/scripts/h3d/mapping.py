@@ -9,6 +9,7 @@ regex_dict = {
     r"Amusteven": "[Amusteven]",
     r"Arhoangel": "[Arhoangel]",
     r"asayuki101": "[asayuki101]",
+    r"Asayuki101": "[asayuki101]",
     r"Auxtasy": "[Auxtasy]",
     r"Bewyx": "[Bewyx]",
     r"BigDarkPP": "[BigDarkPP]",
@@ -88,4 +89,5 @@ regex_dict = {
     r"Waifu Enjoyer": "[Waifu Enjoyer]",
     r"WaterRing": "[WaterRing]",
     r"Yeero": "[Yeero]",
+    r"Nepopan": "[Nepopan]",
 }
