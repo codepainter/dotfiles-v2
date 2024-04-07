@@ -5,7 +5,7 @@
     minute: "0"
     hour: "12"
     job: "brew update"
-  tags: 
+  tags:
     - cron
     - brew
     - brew_update
@@ -17,7 +17,7 @@
     hour: "12"
     day: "1"
     job: "brew cleanup --prune=all"
-  tags: 
+  tags:
     - cron
     - brew
     - brew_cleanup
@@ -26,7 +26,7 @@
   homebrew:
     name: virtualenv
     state: present
-  tags: 
+  tags:
     - cron
 
 - name: "Cron | Setup Automate.py"
@@ -53,7 +53,7 @@
         hour: "*"
         job: "~/.scripts/automate/bin/python3 ~/.scripts/automate/automate.py"
   tags:
-      - cron
+    - cron
 
 - name: "Cron | H3D"
   block:
@@ -66,8 +66,8 @@
         src: scripts/h3d/{{ item }}
         dest: ~/.scripts/h3d/{{ item }}
       loop:
-        - h3d.py
-        - h3d_mapping.py
+        - main.py
+        - mapping.py
         - requirements.txt
     - name: "H3D | Install requirements"
       pip:
@@ -78,6 +78,7 @@
         name: "h3d"
         minute: "15"
         hour: "*"
-        job: "~/.scripts/h3d/bin/python3 ~/.scripts/h3d/h3d.py"
+        job: "~/.scripts/h3d/bin/python3 ~/.scripts/h3d/main.py"
   tags:
-      - cron
+    - cron
+
