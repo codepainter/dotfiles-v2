@@ -3,17 +3,18 @@ from pathlib import Path
 import re
 import shutil
 from rich.console import Console
-from h3d_mapping import regex_dict
+from mapping import regex_dict
 from hurry.filesize import size
 from py7zr import unpack_7zarchive
 
-shutil.register_unpack_format('7zip', ['.7z'], unpack_7zarchive)
+shutil.register_unpack_format("7zip", [".7z"], unpack_7zarchive)
 console = Console()
 
 WATCH_FOLDERS = [
     "/Volumes/Seagate2TB/JDownloader/Various Files",
 ]
 WATCH_EXTENSIONS = [".zip", ".rar", ".7z"]
+WATCH_VIDEO_EXTENSIONS = [".mp4"]
 DESTINATION = "/Volumes/home/H3D"
 BACKUP_DESTINATION = "/Volumes/Seagate2TB/H3D"
 
@@ -67,7 +68,8 @@ def main():
         _h3d_dest = BACKUP_DESTINATION
         if not Path(BACKUP_DESTINATION).exists():
             console.log(
-                f"Destination folder {DESTINATION} and backup folder {BACKUP_DESTINATION} not found")
+                f"Destination folder {DESTINATION} and backup folder {BACKUP_DESTINATION} not found"
+            )
             return
 
     for folder_path in WATCH_FOLDERS:
@@ -76,7 +78,7 @@ def main():
             console.log(f"Watch folder {path} not found")
             continue
         for file in path.iterdir():
-            if not file.suffix in WATCH_EXTENSIONS:
+            if file.suffix not in WATCH_EXTENSIONS:
                 continue
             # match filename with regex from h3d_mapping.py
             for regex, destination in regex_dict.items():
@@ -91,7 +93,7 @@ def main():
     console.log(f"Unzipping {unzip_count} Done!")
 
 
-def move():
+def move_folder():
     # check if DESTINATION exists
     if not Path(DESTINATION).exists():
         console.log(f"move(): Destination folder {DESTINATION} not found")
@@ -107,9 +109,34 @@ def move():
             move_dir(folder_path, dest_path)
             # remove empty folder
             shutil.rmtree(folder_path)
-    console.log(f"Moving Done!")
+    console.log(f"Moving Folders Done!")
+
+
+def move_files():
+    # check if DESTINATION exists
+    if not Path(DESTINATION).exists():
+        console.log(f"move(): Destination folder {DESTINATION} not found")
+        return
+    # for each folder in WATCH_FOLDERS
+    for folder_path in WATCH_FOLDERS:
+        # for each video files in folder_path
+        for file in Path(folder_path).iterdir():
+            if file.suffix not in WATCH_VIDEO_EXTENSIONS:
+                continue
+            # match filename with regex from h3d_mapping.py
+            for regex, destination in regex_dict.items():
+                if not re.search(regex, file.name):
+                    continue
+                dest_path = Path(f"{DESTINATION}/{destination}")
+                # check if destination folder exists
+                check_dest_dir(dest_path)
+                move_file(file, dest_path / file.name)
+                break
+
+    console.log("Moving Files Done!")
 
 
 if __name__ == "__main__":
     main()
-    move()
+    move_folder()
+    move_files()
