@@ -28,20 +28,23 @@
     state: present
   tags:
     - cron
+    
+- name: "Scripts | Ensure ~/.scripts folder exists"
+  file:
+    path: ~/.scripts
+    state: directory
 
 - name: "Cron | Setup NH Organizer"
   vars:
     current_install_dir: "~/.scripts/nh-organizer"
     repository: "{{ nho.repository }}"
   block:
-    - name: "NHO | Ensure ~/.scripts folder exists"
-      file:
-        path: ~/.scripts
-        state: directory
     - name: "NHO | Clone from repository"
       git:
         repo: "{{ repository }}"
         dest: "{{ current_install_dir }}"
+        update: yes
+        force: yes
     - name: "NHO | Install via Poetry"
       shell: "poetry install"
       args:
@@ -68,28 +71,37 @@
     - cron
 
 - name: "Cron | H3D"
+  vars:
+    current_install_dir: "~/.scripts/h3d-organizer"
+    repository: "{{ h3d.repository }}"
   block:
-    - name: "H3D | Ensure ~/.scripts/h3d folder exists"
-      file:
-        path: ~/.scripts/h3d
-        state: directory
-    - name: "H3D | Copy scripts"
+    - name: "H3D | Clone from repository"
+      git:
+        repo: "{{ repository }}"
+        dest: "{{ current_install_dir }}"
+        update: yes
+        force: yes
+    - name: "H3D | Install via Poetry"
+      shell: "poetry install"
+      args:
+        chdir: "{{ current_install_dir }}"
+    - name: "H3D | Write .env file"
       copy:
-        src: scripts/h3d/{{ item }}
-        dest: ~/.scripts/h3d/{{ item }}
-      loop:
-        - main.py
-        - mapping.py
-        - requirements.txt
+        dest: "{{ current_install_dir }}/.env"
+        content: "{{ h3d.env }}"
+    - name: "H3D | Export requirements.txt"
+      shell: "poetry export --without-hashes --format=requirements.txt > requirements.txt"
+      args:
+        chdir: "{{ current_install_dir }}"
     - name: "H3D | Install requirements"
       pip:
-        requirements: ~/.scripts/h3d/requirements.txt
-        virtualenv: ~/.scripts/h3d
-    - name: "H3D | Run h3d.py to run every hour 15 minutes"
+        requirements: "{{ current_install_dir }}/requirements.txt"
+        virtualenv: "{{ current_install_dir }}"
+    - name: "H3D | Run every hour 15 minutes"
       cron:
-        name: "h3d"
+        name: "H3D"
         minute: "15"
         hour: "*"
-        job: "~/.scripts/h3d/bin/python3 ~/.scripts/h3d/main.py"
+        job: "{{ current_install_dir }}/bin/python3 {{ current_install_dir }}/main.py"
   tags:
     - cron
