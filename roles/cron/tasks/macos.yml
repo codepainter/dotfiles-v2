@@ -29,29 +29,41 @@
   tags:
     - cron
 
-- name: "Cron | Setup Automate.py"
+- name: "Cron | Setup NH Organizer"
+  vars:
+    current_install_dir: "~/.scripts/nh-organizer"
+    repository: "{{ nho.repository }}"
   block:
-    - name: "Automate | Ensure ~/.scripts/automate folder exists"
+    - name: "NHO | Ensure ~/.scripts folder exists"
       file:
-        path: ~/.scripts/automate
+        path: ~/.scripts
         state: directory
-    - name: "H3D | Copy scripts"
+    - name: "NHO | Clone from repository"
+      git:
+        repo: "{{ repository }}"
+        dest: "{{ current_install_dir }}"
+    - name: "NHO | Install via Poetry"
+      shell: "poetry install"
+      args:
+        chdir: "{{ current_install_dir }}"
+    - name: "NHO | Write .env file"
       copy:
-        src: scripts/automate/{{ item }}
-        dest: ~/.scripts/automate/{{ item }}
-      loop:
-        - automate.py
-        - requirements.txt
-    - name: "H3D | Install requirements"
+        dest: "{{ current_install_dir }}/.env"
+        content: "{{ nho.env }}"
+    - name: "NHO | Export requirements.txt"
+      shell: "poetry export --without-hashes --format=requirements.txt > requirements.txt"
+      args:
+        chdir: "{{ current_install_dir }}"
+    - name: "NHO | Install requirements"
       pip:
-        requirements: ~/.scripts/automate/requirements.txt
-        virtualenv: ~/.scripts/automate
-    - name: "Automate | Run automate.py to run every hour"
+        requirements: "{{ current_install_dir }}/requirements.txt"
+        virtualenv: "{{ current_install_dir }}"
+    - name: "NHO | Run every hour"
       cron:
-        name: "Automate"
+        name: "NHO"
         minute: "0"
         hour: "*"
-        job: "~/.scripts/automate/bin/python3 ~/.scripts/automate/automate.py"
+        job: "{{ current_install_dir }}/bin/python3 {{ current_install_dir }}/main.py"
   tags:
     - cron
 
@@ -81,4 +93,3 @@
         job: "~/.scripts/h3d/bin/python3 ~/.scripts/h3d/main.py"
   tags:
     - cron
-

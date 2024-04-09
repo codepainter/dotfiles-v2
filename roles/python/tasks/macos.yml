@@ -1,0 +1,20 @@
+--- 
+- name: "Python | Ensure Homebrew packages"
+  homebrew:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - python
+    - poetry
+  tags:
+    - python
+
+- name: "Python | Pip Packages"
+  pip:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - virtualenv
+    - poetry-plugin-export
+  tags:
+    - python
