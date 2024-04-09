@@ -1,3 +1,0 @@
-hurry.filesize==0.9
-rich==13.4.2
-py7zr==0.16.1
