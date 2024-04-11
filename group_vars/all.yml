@@ -9,22 +9,19 @@ default_roles:
   - asdf
   - tmux
   - neovim
-
-ubuntu_brew_packages:
+  - prettyping
   - btop
   - dust
 
+ubuntu_brew_packages:
+  - dust
+
 macos_brew_packages:
-  - btop
   - zip
   - jq
   - yq
   - wget
   - curl
-  - tmux
-  - prettyping
-  - neovim
-  - dust
 
 git_work_username: "Abiyasa"
 git_work_email: !vault |
