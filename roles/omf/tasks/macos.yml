@@ -22,14 +22,6 @@
     - always
     - omf
 
-- debug:
-    msg: 
-      fish_installed: "{{ fish_installed }}"
-      omf_installed: "{{ omf_installed }}"
-  tags:
-    - always
-    - omf
-
 - name: "OMF | Install OMF"
   when: (fish_installed == true) and (omf_installed == false)
   shell: curl -L https://get.oh-my.fish | fish --init-command 'set argv -- --noninteractive'
@@ -37,3 +29,4 @@
     - always
     - omf
     - omf_install
+
