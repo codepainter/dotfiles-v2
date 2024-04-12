@@ -19,3 +19,10 @@
     dest: "~/.tmux.conf"
   tags: 
     - tmux
+
+- name: "tmux | Install starship toml"
+  copy:
+    src: files/starship.toml
+    dest: "~/.config/starship.toml"
+  tags:
+    - tmux
