@@ -1,0 +1,20 @@
+---
+- name: "nushell | Ensure nushell is installed"
+  homebrew:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - nushell
+    - starship
+  tags:
+    - nushell
+
+- name: "nushell | Install configs"
+  copy:
+    src: "files/{{ item }}"
+    dest: "~/.config/nushell/{{ item }}"
+  loop:
+    - config.nu
+    - env.nu
+  tags:
+    - nushell
