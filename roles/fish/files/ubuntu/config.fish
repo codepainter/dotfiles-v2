@@ -10,4 +10,6 @@ source /home/linuxbrew/.linuxbrew/opt/asdf/libexec/asdf.fish
 
 starship init fish | source
 
+setenv STARSHIP_CONFIG ~/.config/starship.toml
+
 setenv EDITOR nvim
