@@ -869,6 +869,6 @@ use ~/.cache/starship/init.nu
 
 neofetch
 
-def ll [] { ls -a | sort-by modified }
+def ll [] { ls -ad | sort-by modified }
 def lsd [] { ls -adl | where type == "dir" | sort-by modified }
 def lsf [] { ls -adl | where type == "file" | sort-by modified }
