@@ -869,6 +869,34 @@ use ~/.cache/starship/init.nu
 
 neofetch
 
+# Prefered ls command
 def ll [] { ls -ad | sort-by modified }
 def lsd [] { ls -adl | where type == "dir" | sort-by modified }
 def lsf [] { ls -adl | where type == "file" | sort-by modified }
+
+# Prefered mkdir-cd command
+def --env mcd [directory: path]: nothing -> nothing {
+    mkdir $directory
+    cd $directory
+}
+
+# Prefered cd command
+alias core-cd = cd
+
+def old-cd [path: path] {
+    if $path == "-" {
+        core-cd -
+    } else {
+        core-cd $path
+    }
+}
+
+def --env cd [path?] {
+  if $path == null {
+    core-cd $env.HOME
+  } else {
+    core-cd $path
+    ll
+  }
+}
+
