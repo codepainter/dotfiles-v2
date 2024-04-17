@@ -880,23 +880,3 @@ def --env mcd [directory: path]: nothing -> nothing {
     cd $directory
 }
 
-# Prefered cd command
-alias core-cd = cd
-
-def old-cd [path: path] {
-    if $path == "-" {
-        core-cd -
-    } else {
-        core-cd $path
-    }
-}
-
-def --env cd [path?] {
-  if $path == null {
-    core-cd $env.HOME
-  } else {
-    core-cd $path
-    ll
-  }
-}
-
