@@ -7,4 +7,6 @@ windows:
       panes:
         - files:
             - clear; neofetch
+        - editor:
+            - clear
             - ll

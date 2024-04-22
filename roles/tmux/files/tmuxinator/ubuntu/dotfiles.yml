@@ -17,13 +17,14 @@ windows:
       panes:
         - files:
             - clear; neofetch
-            - ll
         - editor:
+            - clear
             - ll
   - system-monitor:
       layout: even-horizontal
       panes:
         - ping:
+            - clear
             - prettyping www.google.com
         - btop:
             - btop
