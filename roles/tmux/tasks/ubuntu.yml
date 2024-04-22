@@ -1,5 +1,5 @@
 ---
-- name: "tmux | Ensure tmux is installed"
+- name: "Ensure tmux is installed"
   homebrew:
     name: "{{ item }}"
     state: "present"
@@ -10,14 +10,14 @@
   tags:
     - tmux
 
-- name: "tmux | Install TPM"
+- name: "Install TPM"
   git:
     repo: https://github.com/tmux-plugins/tpm
     dest: ~/.tmux/plugins/tpm
   tags:
     - tmux
 
-- name: "tmux | Install xdg-utils"
+- name: "Install xdg-utils"
   apt:
     name: "{{ item }}"
     state: "present"
@@ -26,29 +26,31 @@
   tags:
     - tmux
 
-- name: "tmux | Install tmux configuration"
+- name: "Install tmux configuration"
   copy:
     src: "files/tmux.conf"
     dest: "~/.tmux.conf"
   tags:
     - tmux
 
-- name: "tmux | Install tmuxinator configuration"
-  copy:
-    src: files/tmuxinator/ubuntu/
-    dest: "~/.config/tmuxinator/"
-  tags:
-    - tmux
-
-- name: "tmux | Install starship toml"
+- name: "Install starship toml"
   copy:
     src: files/starship.toml
     dest: "~/.config/starship.toml"
   tags:
     - tmux
+    - starship
 
-- name: "tmux | Install tmuxinator completion"
-  shell:
-    cmd: fish -c "wget https://raw.githubusercontent.com/tmuxinator/tmuxinator/master/completion/tmuxinator.fish -O ~/.config/fish/completions/tmuxinator.fish"
+- name: "tmuxinator setup"
+  block:
+    - name: "Install completion"
+      shell:
+        cmd: fish -c "wget https://raw.githubusercontent.com/tmuxinator/tmuxinator/master/completion/tmuxinator.fish -O ~/.config/fish/completions/tmuxinator.fish"
+
+    - name: "Install configuration"
+      copy:
+        src: files/tmuxinator/ubuntu/
+        dest: "~/.config/tmuxinator/"
   tags:
     - tmux
+    - tmuxinator
