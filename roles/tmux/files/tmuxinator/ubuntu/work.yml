@@ -1,0 +1,10 @@
+name: nri-dev
+root: ~/nri-dev/
+
+windows:
+  - nri-dev:
+      layout: main-vertical
+      panes:
+        - files:
+            - clear; neofetch
+            - ll

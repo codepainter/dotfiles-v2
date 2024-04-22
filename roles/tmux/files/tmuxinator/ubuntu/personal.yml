@@ -1,0 +1,10 @@
+name: abiyasa-dev
+root: ~/abiyasa-dev/
+
+windows:
+  - abiyasa-dev:
+      layout: main-vertical
+      panes:
+        - files:
+            - clear; neofetch
+            - ll

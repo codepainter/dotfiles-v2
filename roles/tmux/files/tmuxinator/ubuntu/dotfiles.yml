@@ -1,0 +1,27 @@
+name: dotfiles
+root: ~/
+
+windows:
+  - dotfiles:
+      root: ~/.dotfiles
+      layout: main-vertical
+      panes:
+        - files:
+            - clear; neofetch
+            - ll
+        - editor:
+            - nvim
+  - dotconfig:
+      root: ~/.config
+      layout: main-vertical
+      panes:
+        - files:
+            - clear; neofetch
+            - ll
+  - system-monitor:
+      layout: main-vertical
+      panes:
+        - ping:
+            - prettyping www.google.com
+        - btop:
+            - btop

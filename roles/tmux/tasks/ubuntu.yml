@@ -33,6 +33,13 @@
   tags:
     - tmux
 
+- name: "tmux | Install tmuxinator configuration"
+  copy:
+    src: files/tmuxinator/ubuntu/
+    dest: "~/.config/tmuxinator/"
+  tags:
+    - tmux
+
 - name: "tmux | Install starship toml"
   copy:
     src: files/starship.toml
