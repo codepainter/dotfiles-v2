@@ -18,8 +18,10 @@ windows:
         - files:
             - clear; neofetch
             - ll
+        - editor:
+            - ll
   - system-monitor:
-      layout: main-vertical
+      layout: even-horizontal
       panes:
         - ping:
             - prettyping www.google.com
