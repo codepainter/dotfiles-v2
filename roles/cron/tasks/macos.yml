@@ -76,10 +76,10 @@
       pip:
         requirements: "{{ current_install_dir }}/requirements.txt"
         virtualenv: "{{ current_install_dir }}"
-    - name: "H3D | Run every hour 15 minutes"
+    - name: "H3D | Run every hour at 30 minutes"
       cron:
         name: "H3D"
-        minute: "15"
+        minute: "30"
         hour: "*"
         job: "{{ current_install_dir }}/bin/python3 {{ current_install_dir }}/main.py"
   tags:
