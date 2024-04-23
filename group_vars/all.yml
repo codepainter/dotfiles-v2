@@ -15,6 +15,7 @@ default_roles:
 
 ubuntu_brew_packages:
   - dust
+  - xclip
 
 macos_brew_packages:
   - zip
@@ -22,6 +23,7 @@ macos_brew_packages:
   - yq
   - wget
   - curl
+  - xclip
 
 git_work_username: "Abiyasa"
 git_work_email: !vault |
