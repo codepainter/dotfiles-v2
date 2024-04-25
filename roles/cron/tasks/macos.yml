@@ -79,6 +79,6 @@
         name: "H3D-transcode"
         minute: "45"
         hour: "*"
-        job: "{{ current_install_dir }}/.venv/bin/python3 {{ current_install_dir }}/main.py > {{ current_install_dir }}/transcode-log.log 2>&1"
+        job: "{{ current_install_dir }}/.venv/bin/python3 {{ current_install_dir }}/transcode.py /Volumes/Seagate2TB/H3D > {{ current_install_dir }}/transcode-log.log 2>&1"
   tags:
     - cron
