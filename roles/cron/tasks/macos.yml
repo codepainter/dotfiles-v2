@@ -1,5 +1,5 @@
 ---
-- name: "Cron | Ensure VirtualEnv is installed"
+- name: "Ensure VirtualEnv is installed"
   homebrew:
     name: virtualenv
     state: present
@@ -13,7 +13,7 @@
   tags:
     - cron
 
-- name: "Cron | Setup NH Organizer"
+- name: "Setup NH Organizer"
   vars:
     current_install_dir: "~/.scripts/nh-organizer"
     repository: "{{ nho.repository }}"
@@ -49,7 +49,7 @@
   tags:
     - cron
 
-- name: "Cron | H3D Organizer"
+- name: "H3D Organizer"
   vars:
     current_install_dir: "~/.scripts/h3d-organizer"
     repository: "{{ h3d.repository }}"
@@ -60,27 +60,25 @@
         dest: "{{ current_install_dir }}"
         update: yes
         force: yes
-    - name: "H3D | Install via Poetry"
-      shell: "poetry install"
-      args:
-        chdir: "{{ current_install_dir }}"
     - name: "H3D | Write .env file"
       copy:
         dest: "{{ current_install_dir }}/.env"
         content: "{{ h3d.env }}"
-    - name: "H3D | Export requirements.txt"
-      shell: "poetry export --without-hashes --format=requirements.txt > requirements.txt"
-      args:
-        chdir: "{{ current_install_dir }}"
     - name: "H3D | Install requirements"
       pip:
         requirements: "{{ current_install_dir }}/requirements.txt"
-        virtualenv: "{{ current_install_dir }}"
-    - name: "H3D | Run every hour at 30 minutes"
+        virtualenv: "{{ current_install_dir }}/.venv"
+    - name: "H3D | Run main every hour at 15 minutes"
       cron:
-        name: "H3D"
-        minute: "30"
+        name: "H3D-main"
+        minute: "15"
         hour: "*"
-        job: "{{ current_install_dir }}/bin/python3 {{ current_install_dir }}/main.py"
+        job: "{{ current_install_dir }}/.venv/bin/python3 {{ current_install_dir }}/main.py > {{ current_install_dir }}/unzip-log.log 2>&1"
+    - name: "H3D | Run transcode every hour at 45 minutes"
+      cron:
+        name: "H3D-transcode"
+        minute: "15"
+        hour: "*"
+        job: "{{ current_install_dir }}/.venv/bin/python3 {{ current_install_dir }}/main.py > {{ current_install_dir }}/transcode-log.log 2>&1"
   tags:
     - cron
