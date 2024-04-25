@@ -77,7 +77,7 @@
     - name: "H3D | Run transcode every hour at 45 minutes"
       cron:
         name: "H3D-transcode"
-        minute: "15"
+        minute: "45"
         hour: "*"
         job: "{{ current_install_dir }}/.venv/bin/python3 {{ current_install_dir }}/main.py > {{ current_install_dir }}/transcode-log.log 2>&1"
   tags:
