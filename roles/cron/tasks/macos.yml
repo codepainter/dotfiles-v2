@@ -79,6 +79,6 @@
         name: "H3D-transcode"
         minute: "45"
         hour: "*"
-        job: "PYTHON_ENV=production {{ current_install_dir }}/transcode.sh"
+        job: "PATH=/opt/homebrew/bin:${PATH} PYTHON_ENV=production {{ current_install_dir }}/.venv/bin/python {{ current_install_dir }}/transcode.py /Volumes/Seagate2TB/H3D/"
   tags:
     - cron
