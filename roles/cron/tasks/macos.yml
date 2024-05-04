@@ -68,12 +68,12 @@
       pip:
         requirements: "{{ current_install_dir }}/requirements.txt"
         virtualenv: "{{ current_install_dir }}/.venv"
-    - name: "H3D | Run main every hour at 15 minutes"
+    - name: "H3D | Run unzip.py every hour at 15 minutes"
       cron:
-        name: "H3D-main"
+        name: "H3D-unzip"
         minute: "15"
         hour: "*"
-        job: "PYTHON_ENV=production {{ current_install_dir }}/.venv/bin/python {{ current_install_dir }}/unzip.py --path='/Volumes/Seagate2TB/JDownloader/Various Files/'"
+        job: "PATH=/opt/homebrew/bin:${PATH} PYTHON_ENV=production {{ current_install_dir }}/.venv/bin/python {{ current_install_dir }}/unzip.py --path='/Volumes/Seagate2TB/JDownloader/Various Files/'"
     - name: "H3D | Run transcode every hour at 45 minutes"
       cron:
         name: "H3D-transcode"
