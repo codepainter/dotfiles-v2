@@ -73,12 +73,12 @@
         name: "H3D-main"
         minute: "15"
         hour: "*"
-        job: "{{ current_install_dir }}/.venv/bin/python3 {{ current_install_dir }}/main.py > {{ current_install_dir }}/unzip-log.log 2>&1"
+        job: "PYTHON_ENV=production {{ current_install_dir }}/.venv/bin/python {{ current_install_dir }}/unzip.py --path='/Volumes/Seagate2TB/JDownloader/Various Files/'"
     - name: "H3D | Run transcode every hour at 45 minutes"
       cron:
         name: "H3D-transcode"
         minute: "45"
         hour: "*"
-        job: "PATH=/opt/homebrew/bin:${PATH} PYTHON_ENV=production {{ current_install_dir }}/.venv/bin/python {{ current_install_dir }}/transcode_v2.py --path=/Volumes/Seagate2TB/H3D/ --max-bytes=50M"
+        job: "PATH=/opt/homebrew/bin:${PATH} PYTHON_ENV=production {{ current_install_dir }}/.venv/bin/python {{ current_install_dir }}/transcode.py --path=/Volumes/Seagate2TB/H3D/ --max-bytes=200M"
   tags:
     - cron
