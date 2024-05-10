@@ -24,28 +24,26 @@
         dest: "{{ current_install_dir }}"
         update: yes
         force: yes
-    - name: "NHO | Install via Poetry"
-      shell: "poetry install"
-      args:
-        chdir: "{{ current_install_dir }}"
     - name: "NHO | Write .env file"
       copy:
         dest: "{{ current_install_dir }}/.env"
         content: "{{ nho.env }}"
-    - name: "NHO | Export requirements.txt"
-      shell: "poetry export --without-hashes --format=requirements.txt > requirements.txt"
-      args:
-        chdir: "{{ current_install_dir }}"
     - name: "NHO | Install requirements"
       pip:
         requirements: "{{ current_install_dir }}/requirements.txt"
-        virtualenv: "{{ current_install_dir }}"
-    - name: "NHO | Run every hour"
+        virtualenv: "{{ current_install_dir }}/.venv"
+    - name: "NHO | Run zip_to_cbz.py every hour at 0 minutes"
       cron:
-        name: "NHO"
+        name: "NHO-cbz"
         minute: "0"
         hour: "*"
-        job: "{{ current_install_dir }}/bin/python3 {{ current_install_dir }}/main.py"
+        job: "PYTHON_ENV=production {{ current_install_dir }}/.venv/bin/python {{ current_install_dir }}/zip_to_cbz.py --path=/Volumes/Seagate2TB/done"
+    - name: "NHO | Run to_temporarily.py every hour at 30 minutes"
+      cron:
+        name: "NHO-temporarily"
+        minute: "30"
+        hour: "*"
+        job: "PYTHON_ENV=production {{ current_install_dir }}/.venv/bin/python {{ current_install_dir }}/to_temporarily.py --from=/Volumes/Seagate2TB/done"
   tags:
     - cron
 
@@ -79,6 +77,12 @@
         name: "H3D-transcode"
         minute: "45"
         hour: "*"
-        job: "PATH=/opt/homebrew/bin:${PATH} PYTHON_ENV=production {{ current_install_dir }}/.venv/bin/python {{ current_install_dir }}/transcode.py --path=/Volumes/Seagate2TB/H3D/ --max-bytes=200M"
+        job: "PATH=/opt/homebrew/bin:${PATH} PYTHON_ENV=production {{ current_install_dir }}/.venv/bin/python {{ current_install_dir }}/transcode.py --path=/Volumes/Seagate2TB/H3D/ --max=0 --max-bytes=512M --max-time=30m"
+    - name: "H3D | Run gallery every hour at 30 minutes"
+      cron:
+        name: "H3D-gallery"
+        minute: "30"
+        hour: "*"
+        job: "PATH=/opt/homebrew/bin:${PATH} PYTHON_ENV=production {{ current_install_dir }}/.venv/bin/python {{ current_install_dir }}/gallery.py --path=/Volumes/Seagate2TB/H3D/ --max-bytes=512M --max-time=15m"
   tags:
     - cron
