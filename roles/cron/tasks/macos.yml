@@ -77,7 +77,7 @@
         name: "H3D-transcode"
         minute: "10,30,50"
         hour: "*"
-        job: "cd {{ current_install_dir }} && PATH=/opt/homebrew/bin:${PATH} PYTHON_ENV=production .venv/bin/python transcode.py --path=/Volumes/Seagate2TB/H3D/ --max=0 --max-bytes=512M --max-time=30m"
+        job: "cd {{ current_install_dir }} && PATH=/opt/homebrew/bin:${PATH} PYTHON_ENV=production .venv/bin/python transcode.py --path=/Volumes/Seagate2TB/H3D/ --max=0 --max-bytes=0G --max-time=15m"
     - name: "H3D | Run gallery every hour at 30 minutes"
       cron:
         name: "H3D-gallery"
