@@ -71,7 +71,7 @@
         name: "H3D-unzip"
         minute: "0"
         hour: "*"
-        job: "cd {{ current_install_dir }} && PYTHON_ENV=production .venv/bin/python unzip.py --path='/Volumes/Seagate2TB/JDownloader/Various Files/'"
+        job: "cd {{ current_install_dir }} && PYTHON_ENV=production .venv/bin/python unzip.py --path='/Volumes/Seagate2TB/JDownloader/Various Files/' --use-version=3"
     - name: "H3D | Run transcode every hour at 45 minutes"
       cron:
         name: "H3D-transcode"
